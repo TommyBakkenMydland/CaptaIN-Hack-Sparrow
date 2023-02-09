@@ -32,6 +32,10 @@ on:
 permissions:
   contents: read
 
+defaults:
+  run:
+    working-directory: ./CaptaIN-Hack-Sparrow/CaptaIN-Hack-Sparrow/
+
 jobs:
   build:
     runs-on: ubuntu-latest
