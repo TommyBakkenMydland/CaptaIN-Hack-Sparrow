@@ -170,7 +170,7 @@ export class Home extends Component {
   render() {
     return (
       <div>
-        <h1>Hello, fellow Pirate!</h1>
+        <h1>Hello, fellow Pirate! You did github actions!</h1>
 
         <Map />
       </div>
