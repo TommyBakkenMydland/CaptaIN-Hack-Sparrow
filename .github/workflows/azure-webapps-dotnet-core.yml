@@ -34,7 +34,7 @@ permissions:
 
 defaults:
   run:
-    working-directory: ./CaptaIN-Hack-Sparrow/CaptaIN-Hack-Sparrow/
+    working-directory: './CaptaIN-Hack-Sparrow/CaptaIN-Hack-Sparrow/'
 
 jobs:
   build:
