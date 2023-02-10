@@ -1,20 +1,20 @@
 import { Counter } from "./components/Counter";
-import { FetchData } from "./components/FetchData";
+import { PirateAlert } from "./components/PirateAlert";
 import { Home } from "./components/Home";
 
 const AppRoutes = [
   {
     index: true,
-    element: <Home />
+    element: <Home />,
   },
   {
-    path: '/counter',
-    element: <Counter />
+    path: "/counter",
+    element: <Counter />,
   },
   {
-    path: '/fetch-data',
-    element: <FetchData />
-  }
+    path: "/pirate-alert",
+    element: <PirateAlert />,
+  },
 ];
 
 export default AppRoutes;
