@@ -1,4 +1,4 @@
-import { Counter } from "./components/Counter";
+import { Statistics } from "./components/Statistics";
 import { PirateAlert } from "./components/PirateAlert";
 import { Home } from "./components/Home";
 
@@ -8,8 +8,8 @@ const AppRoutes = [
     element: <Home />,
   },
   {
-    path: "/counter",
-    element: <Counter />,
+    path: "/statistics",
+    element: <Statistics />,
   },
   {
     path: "/pirate-alert",
