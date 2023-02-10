@@ -16,16 +16,28 @@ const Map = () => {
 
       
     map.on('load', () => {
-     
+
+      
+      // ship to raid
+      const marker1 = new mapboxgl.Marker()
+      .setLngLat([-77.4144, 25.0759])
+      .addTo(map);
+      
+    
+      // our ship
+      const marker2 = new mapboxgl.Marker()
+      .setLngLat([8.722938, 63.645802]);
+      
+
      
       // Load an image from an external URL.
       map.loadImage(
-        'https://localhost:44492/ship-2.png',
+        '/ship-2.png',
         (error, image) => {
           if (error) throw error;
 
           // Add the image to the map style.
-          map.addImage('cat', image);
+          map.addImage('ship', image);
 
           // Add a data source containing one point feature.
           map.addSource('point', {
@@ -37,7 +49,7 @@ const Map = () => {
                   'type': 'Feature',
                   'geometry': {
                     'type': 'Point',
-                    'coordinates': [-77.4144, 25.0759]
+                    'coordinates': marker2.getLngLat().toArray()
                   }
                 }
               ]
@@ -50,20 +62,14 @@ const Map = () => {
             'type': 'symbol',
             'source': 'point', // reference the data source
             'layout': {
-              'icon-image': 'cat', // reference the image
+              'icon-image': 'ship', // reference the image
               'icon-size': 0.25
             }
           });
         }
       );
-      const marker1 = new mapboxgl.Marker()
-      .setLngLat([8.722938, 63.645802])
-      .addTo(map);
-      const marker2 = new mapboxgl.Marker()
-      .setLngLat([6.722938, 62.645802])
-      .addTo(map);
 
-        // Define the line geometry
+  // Define the line geometry
   const lineGeometry = {
     type: 'Feature',
     geometry: {
@@ -170,7 +176,7 @@ export class Home extends Component {
   render() {
     return (
       <div>
-        <h1>Hello, fellow Pirate! You did github actions!</h1>
+        <h1>Argh, lets find a boat to raid!</h1>
 
         <Map />
       </div>
