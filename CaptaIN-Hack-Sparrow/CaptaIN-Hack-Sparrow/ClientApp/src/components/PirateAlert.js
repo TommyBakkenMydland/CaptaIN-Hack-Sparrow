@@ -20,8 +20,9 @@ export function PirateAlert() {
 
   function GetAlertStatus() {
     fetch(
-      "https://hacksparrowfunction.azurewebsites.net/api/pirate_alert?code=IYPMpSrxddcBLibo0pD4R_e1U2BjIxdvvXg0-yjPvCpXAzFu_W2-tQ==&userID=123",
+      "https://hacksparrowfunction.azurewebsites.net/api/pirate_alert?userID=123",
       {
+        headers: { "x-functions-key": "passord" },
         mode: "cors",
       }
     )
