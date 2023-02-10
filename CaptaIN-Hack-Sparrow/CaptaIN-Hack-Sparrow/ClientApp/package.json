@@ -2,7 +2,6 @@
   "name": "captain_hack_sparrow",
   "version": "0.1.0",
   "private": true,
-  "proxy": "https://hacksparrowfunction.azurewebsites.net",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.3.0",
     "@fortawesome/free-solid-svg-icons": "^6.3.0",
