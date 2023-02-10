@@ -22,7 +22,7 @@ export function PirateAlert() {
     fetch(
       "https://hacksparrowfunction.azurewebsites.net/api/pirate_alert?userID=123",
       {
-        headers: { "x-functions-key": "skipskapskoodelidoo" },
+        headers: { "x-functions-key": "passord" },
         mode: "cors",
       }
     )
