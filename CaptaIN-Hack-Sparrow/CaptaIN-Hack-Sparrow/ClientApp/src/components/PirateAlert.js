@@ -13,28 +13,22 @@ export function PirateAlert() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      GetFakeStatus();
+      GetAlertStatus();
     }, 3000);
     return () => clearInterval(interval);
   }, [alertStatus]);
 
-  /*
   async function GetAlertStatus() {
     const result = await fetch(
-      "https://hacksparrowfunction.azurewebsites.net/api/pirate_alert?code=wzZIDzs9SpWu7oz3_KVxEu3-nnNqHxY6A-lYIbAP6ec-AzFuiENnQg==&userID=23423"
-    );
-    console.log(result);
-    setAlertStatus(result.body);
-  }
-*/
-  async function GetFakeStatus() {
-    const something = Math.random() > 0.7;
-    const elses = Math.random() < 0.3;
-
-    setAlertStatus({
-      danger: something,
-      plunder: elses,
-    });
+      "https://hacksparrowfunction.azurewebsites.net/api/pirate_alert?code=IYPMpSrxddcBLibo0pD4R_e1U2BjIxdvvXg0-yjPvCpXAzFu_W2-tQ==&userID=123",
+      {
+        mode: "cors",
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        setAlertStatus(data);
+      });
   }
 
   const isSomeFormOfAlert = () => alertStatus.danger || alertStatus.plunder;
@@ -78,7 +72,7 @@ export function PirateAlert() {
         ></iframe>
       )}
       {alertStatus.danger && <h1>Fuck, we be in danger me maties!!!</h1>}
-      {!alertStatus.danger && alertStatus.plunder && (
+      {alertStatus.danger == 0 && alertStatus.plunder == 1 && (
         <h1>There be booty on the waves, lads!!</h1>
       )}
       {alertBanner("bottom")}
