@@ -18,8 +18,8 @@ export function PirateAlert() {
     return () => clearInterval(interval);
   }, [alertStatus]);
 
-  async function GetAlertStatus() {
-    const result = await fetch(
+  function GetAlertStatus() {
+    fetch(
       "https://hacksparrowfunction.azurewebsites.net/api/pirate_alert?code=IYPMpSrxddcBLibo0pD4R_e1U2BjIxdvvXg0-yjPvCpXAzFu_W2-tQ==&userID=123",
       {
         mode: "cors",
@@ -72,7 +72,7 @@ export function PirateAlert() {
         ></iframe>
       )}
       {alertStatus.danger && <h1>Fuck, we be in danger me maties!!!</h1>}
-      {alertStatus.danger == 0 && alertStatus.plunder == 1 && (
+      {alertStatus.danger === 0 && alertStatus.plunder === 1 && (
         <h1>There be booty on the waves, lads!!</h1>
       )}
       {alertBanner("bottom")}
