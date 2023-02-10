@@ -1,124 +1,133 @@
-import React, { Component, useEffect, useRef } from "react";
-import mapboxgl from "mapbox-gl";
+import React, { Component, useEffect, useRef } from 'react';
+import mapboxgl from 'mapbox-gl';
 
 const Map = () => {
   const mapContainer = useRef(null);
 
   useEffect(() => {
-    mapboxgl.accessToken =
-      "pk.eyJ1IjoiaGFja3NwYXJyb3ciLCJhIjoiY2xkeDNtNzdtMGRraTNzcGtxMWVnNXk3MSJ9.rGpkDDZxPyJCHrf6cl4lGA";
+    mapboxgl.accessToken = "pk.eyJ1IjoiaGFja3NwYXJyb3ciLCJhIjoiY2xkeDNtNzdtMGRraTNzcGtxMWVnNXk3MSJ9.rGpkDDZxPyJCHrf6cl4lGA";
     const map = new mapboxgl.Map({
       container: mapContainer.current,
       style: "mapbox://styles/mapbox/streets-v11",
       center: [-74.5, 40],
-      zoom: 2,
+      zoom: 2
     });
+    
 
-    map.on("load", () => {
-      // Load an image from an external URL.
-      map.loadImage("https://localhost:44492/ship-2.png", (error, image) => {
-        if (error) throw error;
+      
+    map.on('load', () => {
 
-        // Add the image to the map style.
-        map.addImage("cat", image);
-
-        // Add a data source containing one point feature.
-        map.addSource("point", {
-          type: "geojson",
-          data: {
-            type: "FeatureCollection",
-            features: [
-              {
-                type: "Feature",
-                geometry: {
-                  type: "Point",
-                  coordinates: [-77.4144, 25.0759],
-                },
-              },
-            ],
-          },
-        });
-
-        // Add a layer to use the image to represent the data.
-        map.addLayer({
-          id: "points",
-          type: "symbol",
-          source: "point", // reference the data source
-          layout: {
-            "icon-image": "cat", // reference the image
-            "icon-size": 0.25,
-          },
-        });
-      });
+      
+      // ship to raid
       const marker1 = new mapboxgl.Marker()
-        .setLngLat([8.722938, 63.645802])
-        .addTo(map);
+      .setLngLat([-77.4144, 25.0759])
+      .addTo(map);
+      
+    
+      // our ship
       const marker2 = new mapboxgl.Marker()
-        .setLngLat([6.722938, 62.645802])
-        .addTo(map);
+      .setLngLat([8.722938, 63.645802]);
+      
 
-      // Define the line geometry
-      const lineGeometry = {
-        type: "Feature",
-        geometry: {
-          type: "LineString",
-          coordinates: [
-            marker1.getLngLat().toArray(),
-            marker2.getLngLat().toArray(),
-          ],
-        },
-      };
+     
+      // Load an image from an external URL.
+      map.loadImage(
+        '/ship-2.png',
+        (error, image) => {
+          if (error) throw error;
 
-      // Add the line to the map
-      map.addSource("line", {
-        type: "geojson",
-        data: lineGeometry,
-      });
+          // Add the image to the map style.
+          map.addImage('ship', image);
 
-      map.addLayer({
-        id: "line",
-        type: "line",
-        source: "line",
-        paint: {
-          "line-color": "#ff0000",
-          "line-width": 4,
-        },
-      });
+          // Add a data source containing one point feature.
+          map.addSource('point', {
+            'type': 'geojson',
+            'data': {
+              'type': 'FeatureCollection',
+              'features': [
+                {
+                  'type': 'Feature',
+                  'geometry': {
+                    'type': 'Point',
+                    'coordinates': marker2.getLngLat().toArray()
+                  }
+                }
+              ]
+            }
+          });
 
-      // Animate the line
-      const speed = 0.01; // animation speed
-      const step =
-        speed / (marker1.getLngLat().distanceTo(marker2.getLngLat()) * 1000); // step size
-      let progress = 0;
-
-      const animateLine = () => {
-        progress += step;
-
-        if (progress > 1) {
-          progress = 1;
+          // Add a layer to use the image to represent the data.
+          map.addLayer({
+            'id': 'points',
+            'type': 'symbol',
+            'source': 'point', // reference the data source
+            'layout': {
+              'icon-image': 'ship', // reference the image
+              'icon-size': 0.25
+            }
+          });
         }
+      );
 
-        const currentCoords = marker1
-          .getLngLat()
-          .interpolate(marker2.getLngLat(), progress);
-
-        map.getSource("line").setData({
-          type: "Feature",
-          geometry: {
-            type: "LineString",
-            coordinates: [
-              marker1.getLngLat().toArray(),
-              currentCoords.toArray(),
-            ],
-          },
-        });
-
-        if (progress < 1) {
-          requestAnimationFrame(animateLine);
-        }
-      };
-
-      animateLine();
+  // Define the line geometry
+  const lineGeometry = {
+    type: 'Feature',
+    geometry: {
+      type: 'LineString',
+      coordinates: [
+        marker1.getLngLat().toArray(),
+        marker2.getLngLat().toArray()
+      ]
+    }
+  };
+  
+  // Add the line to the map
+  map.addSource('line', {
+    type: 'geojson',
+    data: lineGeometry
+  });
+  
+  map.addLayer({
+    id: 'line',
+    type: 'line',
+    source: 'line',
+    paint: {
+      'line-color': '#ff0000',
+      'line-width': 4
+    }
+  });
+  
+  // Animate the line
+  const speed = 0.01; // animation speed
+  const step = speed / (marker1.getLngLat().distanceTo(marker2.getLngLat()) * 1000); // step size
+  let progress = 0;
+  
+  const animateLine = () => {
+    progress += step;
+    
+    if (progress > 1) {
+      progress = 1;
+    }
+    
+    const currentCoords = marker1.getLngLat().interpolate(marker2.getLngLat(), progress);
+    
+    map.getSource('line').setData({
+      type: 'Feature',
+      geometry: {
+        type: 'LineString',
+        coordinates: [
+          marker1.getLngLat().toArray(),
+          currentCoords.toArray()
+        ]
+      }
+    });
+    
+    if (progress < 1) {
+      requestAnimationFrame(animateLine);
+    }
+  };
+  
+  animateLine();
       /*
       
       // Use Mapbox Directions API to get a route between the two markers
@@ -167,7 +176,7 @@ export class Home extends Component {
   render() {
     return (
       <div>
-        <h1>Hello, fellow Pirate! You did github actions!</h1>
+        <h1>Argh, lets find a boat to raid!</h1>
 
         <Map />
       </div>
