@@ -6,22 +6,24 @@ export default function Map(props) {
   const accessToken =
     "pk.eyJ1IjoiaGFja3NwYXJyb3ciLCJhIjoiY2xkeDNtNzdtMGRraTNzcGtxMWVnNXk3MSJ9.rGpkDDZxPyJCHrf6cl4lGA";
 
-  const [shipDic, setMarkers] = useState([]);
+  const destination = [-13.84697223438431, 64.87539383277971];
+  const start = [5.588272058883149, 57.63670370186216];
 
   function addShipsToMap(map) {
     var _markers = [];
     Array.from(props.ships).forEach((ship) => {
       _markers.push({
         ship: ship,
-        marker: new mapboxgl.Marker()
-          .setLngLat([ship.longditude, ship.latitude])
-          .addTo(map),
+        marker: new mapboxgl.Marker().setLngLat([
+          ship.longditude,
+          ship.latitude,
+        ]),
       });
     });
-    setMarkers(_markers);
+    return _markers;
   }
 
-  function getRaidCoordinates() {
+  function getRaidCoordinates(shipDic) {
     var coordinates = [];
 
     shipDic.forEach((marker) => {
@@ -31,53 +33,31 @@ export default function Map(props) {
     return coordinates;
   }
 
-  const animateLine = (map) => {
-    const speed = 0.01; // animation speed
-    const step =
-      speed /
-      (shipDic[0].marker
-        .getLngLat()
-        .distanceTo(shipDic[shipDic.length - 1].getLngLat()) *
-        1000); // step size
-
-    let progress = 0;
-    progress += step;
-
-    if (progress > 1) {
-      progress = 1;
-    }
-
-    const currentCoords = shipDic[0]
-      .getLngLat()
-      .interpolate(shipDic[shipDic.length - 1].marker.getLngLat(), progress);
-
-    map.getSource("line").setData({
-      type: "Feature",
-      geometry: {
-        type: "LineString",
-        coordinates: currentCoords,
-      },
-    });
-
-    if (progress < 1) {
-      requestAnimationFrame(animateLine);
-    }
-  };
-
   var images = {
-    Tug: "/pirate.png",
-    Fishing: "/sailboat.png",
+    large: "/large.png",
+    medium: "/medium.png",
+    small: "/small.png",
   };
 
   const addAllImagesToMap = (map) => {
-    map.loadImage(images.Tug, (error, image) => {
+    map.loadImage(images.large, (error, image) => {
       if (error) throw error;
-      map.addImage("Tug", image);
+      map.addImage("large", image);
     });
 
-    map.loadImage(images.Fishing, (error, image) => {
+    map.loadImage(images.medium, (error, image) => {
       if (error) throw error;
-      map.addImage("Fishing", image);
+      map.addImage("medium", image);
+    });
+
+    map.loadImage(images.small, (error, image) => {
+      if (error) throw error;
+      map.addImage("small", image);
+    });
+
+    map.loadImage("/pirate.png", (error, image) => {
+      if (error) throw error;
+      map.addImage("pirate", image);
     });
   };
 
@@ -105,11 +85,20 @@ export default function Map(props) {
       type: "symbol",
       source: ship.ship.id, // reference the data source
       layout: {
-        "icon-image": ship.ship.type, // reference the image
-        "icon-size": 0.2,
+        "icon-image": getShipImage(ship.ship), // reference the image
+        "icon-size": 0.8,
       },
     });
   };
+
+  const getShipImage = (ship) =>
+    ship.length > 10000
+      ? "pirate"
+      : ship.length > 50
+      ? "large"
+      : ship.length > 20
+      ? "medium"
+      : "small";
 
   useEffect(() => {
     mapboxgl.accessToken = accessToken;
@@ -122,25 +111,27 @@ export default function Map(props) {
 
     map.on("load", () => {
       // ship to raid
+      var shipDic = addShipsToMap(map);
       addAllImagesToMap(map);
-
-      addShipsToMap(map);
 
       const ship1 = shipDic[0];
       const ship2 = shipDic[1];
 
-      addImageToMarker(map, ship1);
-      addImageToMarker(map, ship2);
+      shipDic.forEach((ship) => {
+        addImageToMarker(map, ship);
+      });
 
       // Define the line geometry
+
+      var raidPoints = shipDic
+        .filter((ship) => ship.ship.length > 20)
+        .map((ship) => ship.marker.getLngLat().toArray());
+      raidPoints.push(destination);
       const lineGeometry = {
         type: "Feature",
         geometry: {
           type: "LineString",
-          coordinates: [
-            ship1.marker.getLngLat().toArray(),
-            ship2.marker.getLngLat().toArray(),
-          ],
+          coordinates: raidPoints,
         },
       };
 
@@ -156,47 +147,11 @@ export default function Map(props) {
         source: "line",
         paint: {
           "line-color": "#ff0000",
-          "line-width": 4,
+          "line-width": 2,
         },
       });
-
-      // Animate the line
-      const speed = 0.01; // animation speed
-      const step =
-        speed /
-        (ship1.marker.getLngLat().distanceTo(ship2.marker.getLngLat()) * 1000); // step size
-      let progress = 0;
-
-      const animateLine = () => {
-        progress += step;
-
-        if (progress > 1) {
-          progress = 1;
-        }
-
-        const currentCoords = ship1.marker
-          .getLngLat()
-          .interpolate(ship2.marker.getLngLat(), progress);
-
-        map.getSource("line").setData({
-          type: "Feature",
-          geometry: {
-            type: "LineString",
-            coordinates: [
-              ship1.marker.getLngLat().toArray(),
-              currentCoords.toArray(),
-            ],
-          },
-        });
-
-        if (progress < 1) {
-          requestAnimationFrame(animateLine);
-        }
-      };
-
-      animateLine(map);
     });
   }, []);
 
-  return <div ref={mapContainer} style={{ height: "500px", width: "100%" }} />;
+  return <div ref={mapContainer} style={{ height: "700px", width: "100%" }} />;
 }

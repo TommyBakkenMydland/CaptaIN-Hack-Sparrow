@@ -24,6 +24,14 @@ export function Home() {
 
   const ships = [
     {
+      name: "Queen Anne's Revenge",
+      id: "o8er9e42",
+      type: "Pirate",
+      length: 10001,
+      latitude: 57.06243133804449,
+      longditude: 4.781440897571031,
+    },
+    {
       name: "FJORD FISH",
       id: "257961600",
       type: "Tug",
@@ -38,6 +46,14 @@ export function Home() {
       length: 26,
       latitude: 58.452933,
       longditude: 5.998192,
+    },
+    {
+      name: "GABRIELE",
+      id: "257074870",
+      type: "HSC",
+      length: 40,
+      latitude: 62.445858,
+      longditude: 6.197673,
     },
   ];
   return (
