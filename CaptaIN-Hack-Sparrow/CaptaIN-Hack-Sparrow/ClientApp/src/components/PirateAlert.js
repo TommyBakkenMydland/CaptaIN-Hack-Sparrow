@@ -18,6 +18,7 @@ export function PirateAlert() {
     return () => clearInterval(interval);
   }, [alertStatus]);
 
+  /*
   async function GetAlertStatus() {
     const result = await fetch(
       "https://hacksparrowfunction.azurewebsites.net/api/pirate_alert?code=wzZIDzs9SpWu7oz3_KVxEu3-nnNqHxY6A-lYIbAP6ec-AzFuiENnQg==&userID=23423"
@@ -25,7 +26,7 @@ export function PirateAlert() {
     console.log(result);
     setAlertStatus(result.body);
   }
-
+*/
   async function GetFakeStatus() {
     const something = Math.random() > 0.7;
     const elses = Math.random() < 0.3;
