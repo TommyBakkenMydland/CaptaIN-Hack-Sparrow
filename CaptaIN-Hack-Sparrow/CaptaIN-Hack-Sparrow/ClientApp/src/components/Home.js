@@ -1,49 +1,61 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import Map from "./Map";
 
 export function Home() {
-  //getShips();
-
-  function getShips() {
-    fetch(
-      "https://hacksparrowfunction.azurewebsites.net/api/latest_location?&clientId=acdc",
-      {
-        headers: {
-          "x-functions-key":
-            "pz07uwpEFqMHQi-bdjfmLNlGlKiJuE99YKTzupXxDrHcAzFuTD_nUw==",
-        },
-        mode: "cors",
-      }
-    )
+  // const [ships, setShips] = useState();
+  /*
+  function getNearShips() {
+    fetch("https://hacksparrowfunction.azurewebsites.net/api/nearest_ships", {
+      headers: {
+        "x-functions-key": "passord",
+      },
+      mode: "cors",
+    })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
+        setShips(ships);
       })
       .catch(console.log);
   }
 
+  function getShips() {
+    fetch("https://hacksparrowfunction.azurewebsites.net/api/latest_location", {
+      headers: {
+        "x-functions-key": "passord",
+      },
+      mode: "cors",
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setShips(ships);
+      })
+      .catch(console.log);
+  }
+*/
   const ships = [
-    {
-      name: "Queen Anne's Revenge",
-      id: "o8er9e42",
-      type: "Pirate",
-      length: 10001,
-      latitude: 57.06243133804449,
-      longditude: 4.781440897571031,
-    },
     {
       name: "FJORD FISH",
       id: "257961600",
       type: "Tug",
       length: 14,
+      value: 400,
       latitude: 60.171987,
-      longditude: 5.296245,
+      longditude: 3.296245,
+    },
+    {
+      name: "GABRIELE",
+      id: "257074sdd870",
+      type: "HSC",
+      length: 40,
+      latitude: 65.445858,
+      longditude: 2.297673,
     },
     {
       name: "TANGEN",
       id: "257254000",
       type: "Fishing",
       length: 26,
+      value: 200,
       latitude: 58.452933,
       longditude: 5.998192,
     },
@@ -52,13 +64,24 @@ export function Home() {
       id: "257074870",
       type: "HSC",
       length: 40,
+      value: 300,
       latitude: 62.445858,
-      longditude: 6.197673,
+      longditude: 4.297673,
+    },
+    {
+      name: "Big ship",
+      id: "25707432870",
+      type: "HSC",
+      length: 60,
+      value: 200,
+      latitude: 62.445858,
+      longditude: -0.297673,
     },
   ];
+
   return (
     <div>
-      <h1>Argh, lets find a boat to raid!</h1>
+      <h1>The Raid planner</h1>
       <Map ships={ships} />
     </div>
   );

@@ -7,9 +7,41 @@ export default function Map(props) {
     "pk.eyJ1IjoiaGFja3NwYXJyb3ciLCJhIjoiY2xkeDNtNzdtMGRraTNzcGtxMWVnNXk3MSJ9.rGpkDDZxPyJCHrf6cl4lGA";
 
   const destination = [-13.84697223438431, 64.87539383277971];
-  const start = [5.588272058883149, 57.63670370186216];
+  const start = [2.1045357980777055, 61.88705482677207];
 
-  function addShipsToMap(map) {
+  const [userShip, setUserShip] = useState({
+    ship: {
+      name: "Queen Anne's Revenge",
+      id: "00000",
+      type: "Pirate",
+      length: 10001,
+      value: 200,
+      latitude: start[0],
+      longditude: start[1],
+    },
+    marker: new mapboxgl.Marker().setLngLat([start[0], start[1]]),
+  });
+
+  function moveUserShip() {
+    var _userShip = userShip;
+
+    _userShip.marker = new mapboxgl.Marker().setLngLat([
+      userShip.ship.latitude - 1,
+      userShip.ship.longditude,
+    ]);
+
+    setUserShip(_userShip);
+  }
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      moveUserShip();
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  function addShipsToMap() {
     var _markers = [];
     Array.from(props.ships).forEach((ship) => {
       _markers.push({
@@ -110,23 +142,50 @@ export default function Map(props) {
     });
 
     map.on("load", () => {
+      map.addSource("bathymetry", {
+        type: "vector",
+        url: "mapbox://mapbox.mapbox-bathymetry-v2",
+      });
+
+      map.addLayer(
+        {
+          id: "water-depth",
+          type: "fill",
+          source: "bathymetry",
+          "source-layer": "depth",
+          layout: {},
+          paint: {
+            // cubic bezier is a four point curve for smooth and precise styling
+            // adjust the points to change the rate and intensity of interpolation
+            "fill-color": [
+              "interpolate",
+              ["cubic-bezier", 0, 0.5, 1, 0.5],
+              ["get", "min_depth"],
+              200,
+              "#78bced",
+              9000,
+              "#15659f",
+            ],
+          },
+        },
+        "hillshade"
+      );
       // ship to raid
       var shipDic = addShipsToMap(map);
       addAllImagesToMap(map);
-
-      const ship1 = shipDic[0];
-      const ship2 = shipDic[1];
 
       shipDic.forEach((ship) => {
         addImageToMarker(map, ship);
       });
 
-      // Define the line geometry
+      addImageToMarker(map, userShip);
 
+      // Define the line geometry
       var raidPoints = shipDic
         .filter((ship) => ship.ship.length > 20)
         .map((ship) => ship.marker.getLngLat().toArray());
       raidPoints.push(destination);
+
       const lineGeometry = {
         type: "Feature",
         geometry: {
@@ -151,7 +210,7 @@ export default function Map(props) {
         },
       });
     });
-  }, []);
+  }, [userShip]);
 
   return <div ref={mapContainer} style={{ height: "700px", width: "100%" }} />;
 }
