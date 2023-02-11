@@ -1,14 +1,14 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
 export const Home = () => {
   const [logdata, setLogData] = useState([]);
   const [logSection, setLogSection] = useState(null);
-
+  const state = "";
   useEffect(() => {
     getShipLog(["BALDVIN", "JOAN", "HERCULES"]);
-  }, []);
+  }, [state]);
 
   const getShipLog = (names) => {
     names.forEach((name) => {
@@ -64,7 +64,7 @@ export const Home = () => {
 
   return (
     <div>
-      <iframe id="map" src="./map.html" />
+      <iframe title="Map" id="map" src="./map.html" />
       <h2>Ships logs</h2>
       {logSection}
       {logdata.length === 0 && <FontAwesomeIcon size="lg" icon={faSpinner} />}
