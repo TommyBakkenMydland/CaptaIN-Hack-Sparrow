@@ -103,6 +103,36 @@ body {
 }
 
 #map {
-  height: 100vh;
+  height: 60vh;
   width: 100%;
+}
+.logsection {
+  margin-top: 1rem;
+}
+.shiplog {
+  border-bottom: 1px solid;
+  display: flex;
+  justify-content: space-between;
+  max-width: 50rem;
+}
+.shiplog.header {
+  font-weight: bold;
+}
+.shiplog span {
+  margin-right: 1rem;
+  padding: 0.2rem;
+}
+.fa-spinner {
+  animation: circle 1.2s steps(8) infinite;
+  font-size: 2rem;
+  margin: 5rem;
+}
+@keyframes circle {
+  from {
+    transform: rotate(90deg);
+  }
+
+  to {
+    transform: rotate(450deg);
+  }
 }
