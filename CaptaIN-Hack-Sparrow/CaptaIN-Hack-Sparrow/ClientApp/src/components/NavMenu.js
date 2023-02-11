@@ -37,7 +37,7 @@ export class NavMenu extends Component {
           light
         >
           <NavbarBrand tag={Link} to="/">
-            CaptaIN_Hack_Sparrowzxc
+            PLUNDRR
           </NavbarBrand>
           <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
           <Collapse
@@ -48,7 +48,7 @@ export class NavMenu extends Component {
             <ul className="navbar-nav flex-grow">
               <NavItem>
                 <NavLink tag={Link} className="text-dark" to="/">
-                  Home
+                  Raid planner
                 </NavLink>
               </NavItem>
               <NavItem>
@@ -58,7 +58,12 @@ export class NavMenu extends Component {
               </NavItem>
               <NavItem>
                 <NavLink tag={Link} className="text-dark" to="/pirate-alert">
-                  alert
+                  The Pirates Watch
+                </NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink href="/map.html" className="text-dark" target='_self'>
+                  Reidar
                 </NavLink>
               </NavItem>
             </ul>

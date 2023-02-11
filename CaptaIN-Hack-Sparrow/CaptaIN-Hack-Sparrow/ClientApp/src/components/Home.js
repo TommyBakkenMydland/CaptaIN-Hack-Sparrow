@@ -1,185 +1,88 @@
-import React, { Component, useEffect, useRef } from 'react';
-import mapboxgl from 'mapbox-gl';
+import React, { useCallback, useState } from "react";
+import Map from "./Map";
 
-const Map = () => {
-  const mapContainer = useRef(null);
-
-  useEffect(() => {
-    mapboxgl.accessToken = "pk.eyJ1IjoiaGFja3NwYXJyb3ciLCJhIjoiY2xkeDNtNzdtMGRraTNzcGtxMWVnNXk3MSJ9.rGpkDDZxPyJCHrf6cl4lGA";
-    const map = new mapboxgl.Map({
-      container: mapContainer.current,
-      style: "mapbox://styles/mapbox/streets-v11",
-      center: [-74.5, 40],
-      zoom: 2
-    });
-    
-
-      
-    map.on('load', () => {
-
-      
-      // ship to raid
-      const marker1 = new mapboxgl.Marker()
-      .setLngLat([-77.4144, 25.0759])
-      .addTo(map);
-      
-    
-      // our ship
-      const marker2 = new mapboxgl.Marker()
-      .setLngLat([8.722938, 63.645802]);
-      
-
-     
-      // Load an image from an external URL.
-      map.loadImage(
-        '/ship-2.png',
-        (error, image) => {
-          if (error) throw error;
-
-          // Add the image to the map style.
-          map.addImage('ship', image);
-
-          // Add a data source containing one point feature.
-          map.addSource('point', {
-            'type': 'geojson',
-            'data': {
-              'type': 'FeatureCollection',
-              'features': [
-                {
-                  'type': 'Feature',
-                  'geometry': {
-                    'type': 'Point',
-                    'coordinates': marker2.getLngLat().toArray()
-                  }
-                }
-              ]
-            }
-          });
-
-          // Add a layer to use the image to represent the data.
-          map.addLayer({
-            'id': 'points',
-            'type': 'symbol',
-            'source': 'point', // reference the data source
-            'layout': {
-              'icon-image': 'ship', // reference the image
-              'icon-size': 0.25
-            }
-          });
-        }
-      );
-
-  // Define the line geometry
-  const lineGeometry = {
-    type: 'Feature',
-    geometry: {
-      type: 'LineString',
-      coordinates: [
-        marker1.getLngLat().toArray(),
-        marker2.getLngLat().toArray()
-      ]
-    }
-  };
-  
-  // Add the line to the map
-  map.addSource('line', {
-    type: 'geojson',
-    data: lineGeometry
-  });
-  
-  map.addLayer({
-    id: 'line',
-    type: 'line',
-    source: 'line',
-    paint: {
-      'line-color': '#ff0000',
-      'line-width': 4
-    }
-  });
-  
-  // Animate the line
-  const speed = 0.01; // animation speed
-  const step = speed / (marker1.getLngLat().distanceTo(marker2.getLngLat()) * 1000); // step size
-  let progress = 0;
-  
-  const animateLine = () => {
-    progress += step;
-    
-    if (progress > 1) {
-      progress = 1;
-    }
-    
-    const currentCoords = marker1.getLngLat().interpolate(marker2.getLngLat(), progress);
-    
-    map.getSource('line').setData({
-      type: 'Feature',
-      geometry: {
-        type: 'LineString',
-        coordinates: [
-          marker1.getLngLat().toArray(),
-          currentCoords.toArray()
-        ]
-      }
-    });
-    
-    if (progress < 1) {
-      requestAnimationFrame(animateLine);
-    }
-  };
-  
-  animateLine();
-      /*
-      
-      // Use Mapbox Directions API to get a route between the two markers
-      const route = fetch(`https://api.mapbox.com/directions/v5/mapbox/driving/8.722938,63.645802;8.722935,63.645805?access_token=pk.eyJ1IjoiaGFja3NwYXJyb3ciLCJhIjoiY2xkeDNtNzdtMGRraTNzcGtxMWVnNXk3MSJ9.rGpkDDZxPyJCHrf6cl4lGA`)
-        .then(response => response.json())
-        .then(json => {
-          return json.routes[0].geometry;
-        });
-
-      // Add the route to the map
-      map.addSource('route', {
-        'type': 'geojson',
-        'data': {
-          'type': 'Feature',
-          'properties': {},
-          'geometry': route
-        }
-      });
-
-      map.addLayer({
-        'id': 'route',
-        'type': 'line',
-        'source': 'route',
-        'layout': {
-          'line-join': 'round',
-          'line-cap': 'round'
-        },
-        'paint': {
-          'line-color': '#888',
-          'line-width': 8
-        }
-      });
-      
-      */
-    });
-  }, []);
-
-  return <div ref={mapContainer} style={{ height: "500px", width: "100%" }} />;
-};
-
-export default Map;
-
-export class Home extends Component {
-  static displayName = Home.name;
-
-  render() {
-    return (
-      <div>
-        <h1>Argh, lets find a boat to raid!</h1>
-
-        <Map />
-      </div>
-    );
+export function Home() {
+  // const [ships, setShips] = useState();
+  /*
+  function getNearShips() {
+    fetch("https://hacksparrowfunction.azurewebsites.net/api/nearest_ships", {
+      headers: {
+        "x-functions-key": "passord",
+      },
+      mode: "cors",
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setShips(ships);
+      })
+      .catch(console.log);
   }
+
+  function getShips() {
+    fetch("https://hacksparrowfunction.azurewebsites.net/api/latest_location", {
+      headers: {
+        "x-functions-key": "passord",
+      },
+      mode: "cors",
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setShips(ships);
+      })
+      .catch(console.log);
+  }
+*/
+  const ships = [
+    {
+      name: "FJORD FISH",
+      id: "257961600",
+      type: "Tug",
+      length: 14,
+      value: 400,
+      latitude: 60.171987,
+      longditude: 3.296245,
+    },
+    {
+      name: "GABRIELE",
+      id: "257074sdd870",
+      type: "HSC",
+      length: 40,
+      latitude: 65.445858,
+      longditude: 2.297673,
+    },
+    {
+      name: "TANGEN",
+      id: "257254000",
+      type: "Fishing",
+      length: 26,
+      value: 200,
+      latitude: 58.452933,
+      longditude: 5.998192,
+    },
+    {
+      name: "GABRIELE",
+      id: "257074870",
+      type: "HSC",
+      length: 40,
+      value: 300,
+      latitude: 62.445858,
+      longditude: 4.297673,
+    },
+    {
+      name: "Big ship",
+      id: "25707432870",
+      type: "HSC",
+      length: 60,
+      value: 200,
+      latitude: 62.445858,
+      longditude: -0.297673,
+    },
+  ];
+
+  return (
+    <div>
+      <h1>The Raid planner</h1>
+      <Map ships={ships} />
+    </div>
+  );
 }
