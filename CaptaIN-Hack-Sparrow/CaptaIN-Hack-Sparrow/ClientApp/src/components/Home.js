@@ -21,7 +21,7 @@ export const Home = () => {
           },
           body: JSON.stringify({
             name: name,
-            numberOfLogs: 2,
+            numberOfLogs: 4,
           }),
         }
       )
@@ -31,13 +31,10 @@ export const Home = () => {
           var _logdata = logdata;
           _logdata.push(data);
           setLogData(_logdata);
+          setLogSection(logdata.map((shipLog) => GetShipLogItem(shipLog)));
         });
     });
   };
-
-  useEffect(() => {
-    setLogSection(logdata.map((shipLog) => GetShipLogItem(shipLog)));
-  }, [logdata]);
 
   const GetShipLogItem = (log) => {
     return (
