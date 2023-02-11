@@ -5,10 +5,9 @@ import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 export const Home = () => {
   const [logdata, setLogData] = useState([]);
   const [logSection, setLogSection] = useState(null);
-  const state = "";
   useEffect(() => {
     getShipLog(["BALDVIN", "JOAN", "HERCULES"]);
-  }, [state]);
+  }, [getShipLog]);
 
   const getShipLog = (names) => {
     names.forEach((name) => {
