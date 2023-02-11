@@ -61,11 +61,6 @@ export class NavMenu extends Component {
                   The Pirates Watch
                 </NavLink>
               </NavItem>
-              <NavItem>
-                <NavLink href="/map.html" className="text-dark" target='_self'>
-                  Reidar
-                </NavLink>
-              </NavItem>
             </ul>
           </Collapse>
         </Navbar>
