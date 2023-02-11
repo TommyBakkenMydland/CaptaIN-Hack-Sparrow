@@ -13,7 +13,7 @@ export default function Map(props) {
     ship: {
       name: "Queen Anne's Revenge",
       id: "00000",
-      type: "Pirate",
+      type: "pirate",
       length: 10001,
       value: 200,
       latitude: start[0],
@@ -66,28 +66,30 @@ export default function Map(props) {
   }
 
   var images = {
-    large: "/large.png",
-    medium: "/medium.png",
-    small: "/small.png",
+    opportunity: "/opportunity.png",
+    firend: "/friend.png",
+    threat: "/threat.png",
+    pirate: "/pirate.png",
   };
 
+  var types = ["opportunity", "friend", "threat"];
   const addAllImagesToMap = (map) => {
-    map.loadImage(images.large, (error, image) => {
+    map.loadImage(images.opportunity, (error, image) => {
       if (error) throw error;
-      map.addImage("large", image);
+      map.addImage("opportunity", image);
     });
 
-    map.loadImage(images.medium, (error, image) => {
+    map.loadImage(images.firend, (error, image) => {
       if (error) throw error;
-      map.addImage("medium", image);
+      map.addImage("friend", image);
     });
 
-    map.loadImage(images.small, (error, image) => {
+    map.loadImage(images.threat, (error, image) => {
       if (error) throw error;
-      map.addImage("small", image);
+      map.addImage("threat", image);
     });
 
-    map.loadImage("/pirate.png", (error, image) => {
+    map.loadImage(images.pirate, (error, image) => {
       if (error) throw error;
       map.addImage("pirate", image);
     });
@@ -117,13 +119,17 @@ export default function Map(props) {
       type: "symbol",
       source: ship.ship.id, // reference the data source
       layout: {
-        "icon-image": getShipImage(ship.ship), // reference the image
+        "icon-image": ship.ship.type, // reference the image
         "icon-size": 0.8,
       },
     });
   };
 
-  const getShipImage = (ship) =>
+  const getImageType = (ship) => {
+    return types[Math.floor(Math.random() * types.length)];
+  };
+
+  const getImageSize = (ship) =>
     ship.length > 10000
       ? "pirate"
       : ship.length > 50
@@ -182,7 +188,7 @@ export default function Map(props) {
 
       // Define the line geometry
       var raidPoints = shipDic
-        .filter((ship) => ship.ship.length > 20)
+        .filter((ship) => ship.ship.type === "opportunity")
         .map((ship) => ship.marker.getLngLat().toArray());
       raidPoints.push(destination);
 
