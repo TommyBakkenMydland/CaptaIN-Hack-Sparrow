@@ -81,7 +81,7 @@ export function Home() {
 
   return (
     <div>
-      <h1>The Raid planner</h1>
+      <h1>The Raid planner ⚓</h1>
       <Map ships={ships} />
     </div>
   );
