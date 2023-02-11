@@ -34,9 +34,7 @@ export const Home = () => {
 
   useEffect(() => {
     getShipLog(["BALDVIN", "JOAN", "HERCULES"]);
-  }, [getShipLog]);
-
-
+  }, []);
 
   const GetShipLogItem = (log) => {
     return (
