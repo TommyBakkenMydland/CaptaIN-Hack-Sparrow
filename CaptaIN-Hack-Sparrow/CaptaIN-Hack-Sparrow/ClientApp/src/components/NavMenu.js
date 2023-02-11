@@ -61,7 +61,6 @@ export class NavMenu extends Component {
                   The Pirates Watch 📢
                 </NavLink>
               </NavItem>
-
             </ul>
           </Collapse>
         </Navbar>
