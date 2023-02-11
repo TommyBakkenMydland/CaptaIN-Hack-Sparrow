@@ -12,17 +12,20 @@ export function PirateAlert() {
   });
 
   useEffect(() => {
+    GetAlertStatus();
     const interval = setInterval(() => {
       GetAlertStatus();
-    }, 3000);
+    }, 10000);
     return () => clearInterval(interval);
-  }, [alertStatus]);
+  }, []);
 
   function GetAlertStatus() {
     fetch(
       "https://hacksparrowfunction.azurewebsites.net/api/pirate_alert?userID=123",
       {
-        headers: { "x-functions-key": "passord" },
+        headers: {
+          "x-functions-key": "passord",
+        },
         mode: "cors",
       }
     )
@@ -32,7 +35,8 @@ export function PirateAlert() {
       });
   }
 
-  const isSomeFormOfAlert = () => alertStatus.danger || alertStatus.plunder;
+  const isSomeFormOfAlert = () =>
+    alertStatus.danger || alertStatus.plunder || 0;
 
   const alertBanner = (position) => {
     if (isSomeFormOfAlert()) {
@@ -49,7 +53,7 @@ export function PirateAlert() {
         </div>
       );
     } else {
-      return <></>;
+      return null;
     }
   };
 
@@ -61,18 +65,20 @@ export function PirateAlert() {
       }
     >
       {alertBanner("top")}
-      {isSomeFormOfAlert() && (
+      {isSomeFormOfAlert() === 1 && (
         <iframe
           width="0"
           height="0"
-          src="https://www.youtube.com/embed/2EU67V-Bt8g?start=5&autoplay=1"
-          frameborder="0"
+          src="https://www.youtube.com/embed/2EU67V-Bt8g?start=5&autoplay=true"
+          frameBorder="0"
           title="YouTube video player"
           allow="autoplay"
-          allowfullscreen
         ></iframe>
       )}
-      {alertStatus.danger && <h1>Fuck, we be in danger me maties!!!</h1>}
+      {isSomeFormOfAlert() === 0 && (
+        <h1>On the lookout for danger, Captain!</h1>
+      )}
+      {alertStatus.danger === 1 && <h1>Fuck, we be in danger me maties!!!</h1>}
       {alertStatus.danger === 0 && alertStatus.plunder === 1 && (
         <h1>There be booty on the waves, lads!!</h1>
       )}
