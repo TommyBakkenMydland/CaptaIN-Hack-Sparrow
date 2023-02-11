@@ -45,7 +45,7 @@ export class NavMenu extends Component {
             isOpen={!this.state.collapsed}
             navbar
           >
-            <ul className="navbar-nav flex-grow: 4">
+            <ul className="navbar-nav flex-grow">
               <NavItem>
                 <NavLink tag={Link} className="text-dark" to="/">
                   Raid planner
