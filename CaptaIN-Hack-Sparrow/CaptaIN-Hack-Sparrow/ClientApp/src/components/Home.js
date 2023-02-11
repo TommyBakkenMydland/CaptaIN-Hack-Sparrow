@@ -7,7 +7,7 @@ export const Home = () => {
   const [logSection, setLogSection] = useState(null);
   useEffect(() => {
     getShipLog(["BALDVIN", "JOAN", "HERCULES"]);
-  }, [getShipLog]);
+  });
 
   const getShipLog = (names) => {
     names.forEach((name) => {
