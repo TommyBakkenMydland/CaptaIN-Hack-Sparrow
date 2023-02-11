@@ -45,7 +45,7 @@ export class NavMenu extends Component {
             isOpen={!this.state.collapsed}
             navbar
           >
-            <ul className="navbar-nav flex-grow">
+            <ul className="navbar-nav flex-grow: 4">
               <NavItem>
                 <NavLink tag={Link} className="text-dark" to="/">
                   Raid planner
@@ -59,6 +59,11 @@ export class NavMenu extends Component {
               <NavItem>
                 <NavLink tag={Link} className="text-dark" to="/pirate-alert">
                   The Pirates Watch
+                </NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink href="/map.html" className="text-dark" target='_self'>
+                  Reidar
                 </NavLink>
               </NavItem>
             </ul>
